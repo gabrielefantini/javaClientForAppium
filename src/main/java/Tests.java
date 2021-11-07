@@ -11,6 +11,8 @@ import io.appium.java_client.touch.offset.PointOption;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Point;
 import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -139,6 +141,50 @@ public class Tests {
 
         Assert.assertEquals(driver.findElement(By.id("it.feio.android.omninotes.alpha:id/note_title")).getText(), "X");
 
+
+    }
+
+    @Test
+    void deleteNoteAndEmptyTrash()  throws MalformedURLException {
+        DesiredCapabilities dc = new DesiredCapabilities();
+
+        dc.setCapability(MobileCapabilityType.DEVICE_NAME, "emulator-5559");
+        dc.setCapability("platformName", "android");
+        dc.setCapability("appPackage", "it.feio.android.omninotes.alpha");
+        dc.setCapability("appActivity", "it.feio.android.omninotes.MainActivity");
+
+        AndroidDriver<AndroidElement> driver = new AndroidDriver<AndroidElement>(new URL("http://127.0.0.1:4723/wd/hub"), dc);
+
+        MobileElement el1 = (MobileElement) driver.findElement(By.id("it.feio.android.omninotes.alpha:id/fab_expand_menu_button"));
+        el1.click();
+        MobileElement el2 = (MobileElement) driver.findElement(By.id("it.feio.android.omninotes.alpha:id/fab_note"));
+        el2.click();
+        MobileElement el3 = (MobileElement) driver.findElement(By.id("it.feio.android.omninotes.alpha:id/detail_title"));
+        el3.click();
+        el3.sendKeys("New Note");
+        MobileElement el4 = (MobileElement) driver.findElement(MobileBy.AccessibilityId("drawer open"));
+        el4.click();
+        MobileElement el5 = (MobileElement) driver.findElement(By.xpath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/androidx.drawerlayout.widget.DrawerLayout/android.widget.RelativeLayout/android.widget.FrameLayout[2]/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/androidx.recyclerview.widget.RecyclerView/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.LinearLayout"));
+        el5.click();
+        MobileElement el6 = (MobileElement) driver.findElement(MobileBy.AccessibilityId("More options"));
+        el6.click();
+        MobileElement el7 = (MobileElement) driver.findElement(By.xpath("/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.ListView/android.widget.LinearLayout[6]/android.widget.LinearLayout"));
+        el7.click();
+        MobileElement el8 = (MobileElement) driver.findElement(MobileBy.AccessibilityId("drawer open"));
+        el8.click();
+        MobileElement el9 = (MobileElement) driver.findElement(By.xpath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/androidx.drawerlayout.widget.DrawerLayout/android.widget.ScrollView/android.widget.LinearLayout/android.widget.ListView[1]/android.widget.LinearLayout[2]/android.widget.LinearLayout/android.widget.TextView"));
+        el9.click();
+
+        Assert.assertEquals(driver.findElement(By.id("it.feio.android.omninotes.alpha:id/note_title")).getText(), "New Note");
+
+        MobileElement el10 = (MobileElement) driver.findElement(MobileBy.AccessibilityId("More options"));
+        el10.click();
+        MobileElement el11 = (MobileElement) driver.findElement(By.xpath("/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.ListView/android.widget.LinearLayout[2]/android.widget.LinearLayout"));
+        el11.click();
+        MobileElement el12 = (MobileElement) driver.findElement(By.id("it.feio.android.omninotes.alpha:id/md_buttonDefaultPositive"));
+        el12.click();
+
+        Assert.assertEquals(driver.findElements(By.id("it.feio.android.omninotes.alpha:id/note_title")).size(), 0);
 
     }
 }
