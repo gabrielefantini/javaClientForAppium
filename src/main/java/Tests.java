@@ -93,7 +93,7 @@ public class Tests {
     }
 
     @Test
-    void searchNote()  throws MalformedURLException {
+    void searchNote() throws MalformedURLException {
         DesiredCapabilities dc = new DesiredCapabilities();
 
         dc.setCapability(MobileCapabilityType.DEVICE_NAME, "emulator-5559");
@@ -145,7 +145,7 @@ public class Tests {
     }
 
     @Test
-    void deleteNoteAndEmptyTrash()  throws MalformedURLException {
+    void deleteNoteAndEmptyTrash() throws MalformedURLException {
         DesiredCapabilities dc = new DesiredCapabilities();
 
         dc.setCapability(MobileCapabilityType.DEVICE_NAME, "emulator-5559");
@@ -192,6 +192,40 @@ public class Tests {
 
         Assert.assertEquals(driver.findElements(By.id("it.feio.android.omninotes.alpha:id/note_title")).size(), 0);
 
+    }
+
+    @Test
+    void infoMenu() throws MalformedURLException {
+        DesiredCapabilities dc = new DesiredCapabilities();
+
+        dc.setCapability(MobileCapabilityType.DEVICE_NAME, "emulator-5559");
+        dc.setCapability("platformName", "android");
+        dc.setCapability("appPackage", "it.feio.android.omninotes.alpha");
+        dc.setCapability("appActivity", "it.feio.android.omninotes.MainActivity");
+
+        AndroidDriver<AndroidElement> driver = new AndroidDriver<AndroidElement>(new URL("http://127.0.0.1:4723/wd/hub"), dc);
+
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+
+        MobileElement el1 = (MobileElement) driver.findElement(MobileBy.AccessibilityId("drawer open"));
+        el1.click();
+        MobileElement el2 = (MobileElement) driver.findElement(By.id("it.feio.android.omninotes.alpha:id/settings"));
+        el2.click();
+
+        int screenH = (int) driver.manage().window().getSize().height;
+        int screenW = (int) driver.manage().window().getSize().width/2;
+        TouchAction touchAction = new TouchAction(driver);
+
+        touchAction.press(PointOption.point(screenW, (int) (screenH * 0.9)))
+                .moveTo(PointOption.point(screenW, (int) (screenH * 0.7)))
+                .moveTo(PointOption.point(screenW, (int) (screenH * 0.3)))
+                .release()
+                .perform();
+
+        MobileElement el3 = (MobileElement) driver.findElement(By.xpath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.RelativeLayout/android.widget.FrameLayout[2]/android.widget.LinearLayout/android.widget.FrameLayout/androidx.recyclerview.widget.RecyclerView/android.widget.LinearLayout[13]"));
+        el3.click();
+
+        Assert.assertEquals(driver.findElement(By.xpath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.view.ViewGroup/android.widget.TextView")).getText(), "Info");
     }
 }
 
