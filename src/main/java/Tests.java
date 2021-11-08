@@ -155,6 +155,8 @@ public class Tests {
 
         AndroidDriver<AndroidElement> driver = new AndroidDriver<AndroidElement>(new URL("http://127.0.0.1:4723/wd/hub"), dc);
 
+        WebDriverWait wait = new WebDriverWait(driver, 10);
+
         MobileElement el1 = (MobileElement) driver.findElement(By.id("it.feio.android.omninotes.alpha:id/fab_expand_menu_button"));
         el1.click();
         MobileElement el2 = (MobileElement) driver.findElement(By.id("it.feio.android.omninotes.alpha:id/fab_note"));
@@ -168,8 +170,9 @@ public class Tests {
         el5.click();
         MobileElement el6 = (MobileElement) driver.findElement(MobileBy.AccessibilityId("More options"));
         el6.click();
-        MobileElement el7 = (MobileElement) driver.findElement(By.xpath("/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.ListView/android.widget.LinearLayout[6]/android.widget.LinearLayout"));
-        el7.click();
+
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.ListView/android.widget.LinearLayout[6]/android.widget.LinearLayout"))).click();
+
         MobileElement el8 = (MobileElement) driver.findElement(MobileBy.AccessibilityId("drawer open"));
         el8.click();
         MobileElement el9 = (MobileElement) driver.findElement(By.xpath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.FrameLayout/androidx.drawerlayout.widget.DrawerLayout/android.widget.ScrollView/android.widget.LinearLayout/android.widget.ListView[1]/android.widget.LinearLayout[2]/android.widget.LinearLayout/android.widget.TextView"));
@@ -179,10 +182,13 @@ public class Tests {
 
         MobileElement el10 = (MobileElement) driver.findElement(MobileBy.AccessibilityId("More options"));
         el10.click();
-        MobileElement el11 = (MobileElement) driver.findElement(By.xpath("/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.ListView/android.widget.LinearLayout[2]/android.widget.LinearLayout"));
-        el11.click();
+
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("/hierarchy/android.widget.FrameLayout/android.widget.FrameLayout/android.widget.ListView/android.widget.LinearLayout[2]/android.widget.LinearLayout"))).click();
+
         MobileElement el12 = (MobileElement) driver.findElement(By.id("it.feio.android.omninotes.alpha:id/md_buttonDefaultPositive"));
         el12.click();
+
+        wait.until(ExpectedConditions.invisibilityOfElementLocated(By.id("it.feio.android.omninotes.alpha:id/note_title")));
 
         Assert.assertEquals(driver.findElements(By.id("it.feio.android.omninotes.alpha:id/note_title")).size(), 0);
 
